@@ -1,0 +1,231 @@
+scalar Date
+scalar Payload
+
+type Query {
+    me(query: ID!): User!
+    visit(query: ID!): User!
+    post(query: ID!): [Post!]!
+    room(query: ID!): [ChatRoom!]!
+}
+
+type User {
+    userName: ID!
+    birthday: String!
+    from: String!
+    liveIn: String!
+    school: String!
+    email: String!
+    phone: String!
+    instagram: String!
+    website: String!
+    about: String!
+    github: String!
+    position: String!
+    company: String!
+    friends: [ID!]!
+    requests: [ID!]!
+    invitations: [ID!]!
+    coverURL: String!
+    headShotURL: String!
+    headShotUpdateTime: Date!
+    notifications: Payload!
+    notificationsViewTime: Date!
+    users: Users!
+}
+
+type Users {
+    usersList: [ID!]!
+    headShotURLs: Payload!
+}
+
+type Post {
+    _id: ID!
+    author: ID!
+    postId: ID!
+    title: String!
+    body: [String!]!
+    tags: [String!]!
+    image: String
+    published: String!
+    likes: [ID!]!
+    comments: Payload!
+    createTime: Date!
+}
+
+type ChatRoom {
+    _id: ID!
+    roomName: String!
+    roomId: ID!
+    members: [ID!]!
+    messages: Payload!
+    viewTime: Date!
+    createTime: Date!
+}
+
+type Mutation {
+    createUser(data: CreateUserInput!): Boolean
+    signIn(data: SignedInUserInput!): Boolean
+    updateHeadShot(data: UpdateHeadShotInput!): Boolean
+    updateInfo(data: UpdateInfoInput!): Boolean
+    addFriend(data: AddFriendInput!): Boolean
+    acceptRequest(data: AddFriendInput!): Boolean
+    rejectRequest(data: AddFriendInput!): Boolean
+    updateNotificationsViewTime(query: ID!): Boolean
+    createPost(data: CreatePostInput!): Boolean
+    updatePost(data: CreatePostInput!): Boolean
+    deletePost(postId: ID!): Boolean
+    createComment(data: CreateCommentInput!): Boolean
+    updateComment(data: UpdateCommentInput!): Boolean
+    deleteComment(data: DeleteCommentInput!): Boolean
+    like(data: LikeInput!): Boolean
+    unlike(data: LikeInput!): Boolean
+    createRoom(data: CreateRoomInput!): Boolean
+    sendMessage(data: SendMessageInput!): Boolean
+    deleteMessage(data: DeleteMessageInput!): Boolean
+    updateMessagesViewTime(data: UpdateMessagesViewTimeInput!): Boolean
+    addRoomMember(data: AddRoomMemberInput!): Boolean
+    leaveRoom(data: UpdateMessagesViewTimeInput!): Boolean
+}
+
+input CreateUserInput {
+    userName: ID!
+    password: String!
+    email: String!
+    phone: String
+}
+
+input SignedInUserInput {
+    userName: ID!
+    password: String!
+}
+
+input UpdateHeadShotInput {
+    userName: ID!
+    headShotURL: String!
+    updateType: String!
+}
+
+input UpdateInfoInput {
+    userName: ID!
+    birthday: String!
+    from: String!
+    liveIn: String!
+    school: String!
+    email: String!
+    phone: String!
+    instagram: String!
+    website: String!
+    about: String!
+    github: String!
+    position: String!
+    company: String!
+}
+
+input AddFriendInput {
+    from: ID!
+    to: ID!
+}
+
+input CreatePostInput {
+    author: ID!
+    postId: ID!
+    title: String!
+    body: [String!]!
+    tags: [String!]!
+    image: String!
+    published: String!
+}
+
+input CreateCommentInput {
+    postId: ID!
+    author: ID!
+    commentId: ID!
+    text: [String!]!
+}
+
+input UpdateCommentInput {
+    postId: ID!
+    commentId: ID!
+    text: [String!]!
+}
+
+input DeleteCommentInput {
+    postId: ID!
+    commentId: ID!
+}
+
+input LikeInput {
+    postId: ID!
+    userName: ID!
+}
+
+input CreateRoomInput {
+    roomName: String!
+    roomId: ID!
+    members: [ID!]!
+}
+
+input SendMessageInput {
+    roomId: ID!
+    sender: ID!
+    messageId: ID!
+    text: String!
+}
+
+input DeleteMessageInput {
+    roomId: ID!
+    messageId: ID!
+}
+
+input UpdateMessagesViewTimeInput {
+    roomId: ID!
+    userName: ID!
+}
+
+input AddRoomMemberInput {
+    roomId: ID!
+    from: ID!
+    to: ID!
+}
+
+type Subscription {
+    publicUser: SubscriptionPayload!
+    me(query: ID!): SubscriptionPayload!
+    room(query: ID!): SubscriptionPayload!
+    publicPost: SubscriptionPayload!
+    post(query: ID!): SubscriptionPayload!
+}
+
+enum MutationType {
+    NEW_USER_CREATED
+    FRIEND_ADDED_FROM
+    FRIEND_ADDED_TO
+    FRIEND_ACCEPTED_FROM
+    FRIEND_ACCEPTED_TO
+    FRIEND_REJECTED_FROM
+    FRIEND_REJECTED_TO
+    NOTIFICATIONS_VIEW_TIME_UPDATED
+    NOTIFICATIONS_UPDATED
+    ROOM_CREATED
+    MESSAGE_SENT
+    MESSAGE_DELETED
+    MESSAGES_VIEW_TIME_UPDATED
+    ROOM_MEMBER_ADDED
+    ROOM_MEMBER_LEFT
+    ROOM_LEFT
+    POST_CREATED
+    POST_UPDATED
+    POST_DELETED
+    COMMENT_CREATED
+    COMMENT_UPDATED
+    COMMENT_DELETED
+    LIKE
+    UNLIKE
+    INFO_UPDATED
+    HEAD_SHOT_UPDATED
+}
+
+type SubscriptionPayload {
+    mutation: MutationType!
+    data: Payload!
+}
