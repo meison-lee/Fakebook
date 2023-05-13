@@ -5,24 +5,22 @@
 [Deploy Link](http://44.212.241.217)
 
 
-## 服務介紹
-Fakebook系統嘗試重現Facebook的功能、介面樣式。
+## Introduction
+A social media application refer to Facebook
 
-這學期的課程中，接觸了帳號註冊、聊天室等等題目，透過課程了解前端設計、後端資料庫溝通等概念，因此小組討論後決定運用這些知識，以社群網站Facebook為目標，製作出具備相似功能的系統。
-
-## 網站功能
-* 註冊(帳號、密碼、信箱、電話)、登入
-* 貼文首頁、個人頁面、新增個人簡介
-* 尋找好友、加好友、邀請通知
-* 發文、編輯、刪除文章
-* 留言評論、喜歡貼文
-* 聊天室、群組聊天
+## Service
+* Registration and login, logout
+* Personal page and main page
+* Adding friends on Fakebook and view their profile
+* Post, delete and edit the posts
+* Leave your comment and like the posts
+* A chatroom to talk with your friends
 
 ## 使用之第三方套件、框架、程式碼
 * **Frontend:** React, graphql, Cookie, react-router-dom, apollo, Material-UI, Ant Design, uuid, moment, react-router-dom, moment, XML
 * **Backend:** mongoose, express, bcrypt, cors, dotenv-defaults, uuid, apollo-server-express
 
-## 程式架構
+## Structure
 ```
 .
 └── backend
