@@ -2,6 +2,7 @@
 [Demo Link](https://youtu.be/yEc1Ph_MGXU)
 
 ## Deploy
+[Deploy Link](https://44.212.241.217)
 
 
 ## 服務介紹
@@ -63,22 +64,9 @@ Fakebook系統嘗試重現Facebook的功能、介面樣式。
         └── subscription.js
 ```
 
-## 分工
-李明軒：登入畫面及聊天室前後端
-劉正德：負責首頁的設置、個人介面的一些前端和function
-鄭新曄: 主要負責發文功能，包括貼文與評論，讓使用者能編輯、刪除文章或留言，並讓database收到貼文者、內容、發文時間等資料。
 
 ## Run in local
-1. 下載並安裝 packages.
-```
-git clone 網址
-cd ./Fakebook
-yarn install
-cd frontend
-yarn install
-cd ..
-yarn build
-```
-2. 將 `.env` 填寫後，置於frontend資料夾。
-3. Run `yarn start`.
-4. 網頁中開啟 [http://localhost:80](http://localhost:80)，即可看到結果。
+1. yarn install
+2. yarn build
+3. yarn start
+4. open your localhost with port 80, and you will see our website
