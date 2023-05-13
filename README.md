@@ -2,7 +2,7 @@
 [Demo Link](https://youtu.be/yEc1Ph_MGXU)
 
 ## Deploy
-[Deploy Link](https://44.212.241.217)
+[Deploy Link](44.212.241.217)
 
 
 ## 服務介紹
