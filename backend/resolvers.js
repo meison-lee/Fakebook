@@ -29,7 +29,7 @@ const resolvers = {
         },
     },
     Mutation: {
-        async createUser(parent, { data: { userName, password, email, phone } }, { db, pubSub }, info) {
+        async createUser(parent, { data: { userName, password } }, { db, pubSub }, info) {
             if(await db.UserModel.findOne({ userName })){
                 return false;
             };
@@ -42,8 +42,8 @@ const resolvers = {
                 from: "",
                 liveIn: "",
                 school: "",
-                email,
-                phone,
+                email: "",
+                phone: "",
                 instagram: "",
                 website: "",
                 about: "",
@@ -55,7 +55,7 @@ const resolvers = {
                 invitations: [],
                 headShotURL: "",
                 headShotUpdateTime: init,
-                notifications: [{ info: `${userName}, Welcome to Bongo!`, timestamp: now }],
+                notifications: [{ info: `${userName}, Welcome to Bongo Cha Cha!`, timestamp: now }],
                 notificationsViewTime: init,
                 createTime: now,
             }).save();
@@ -129,7 +129,7 @@ const resolvers = {
             const now = new Date();
             const from = await db.UserModel.findOne({ userName: data.from });
             if(from.friends.some(friend => friend===data.to)) return false;
-            const to = await db.UserModel.findOne({ userName: data.to });
+            const to = await db.UserModel.findOne({ userName: data.to }); 
             if(to.friends.some(friend => friend===data.from)) return false;
             from.invitations = from.invitations.filter(user => user!==data.to);
             from.notifications.unshift({ info: `Congratulations! You and ${data.to} became friend on Bongo.`, timestamp: now });
@@ -157,7 +157,7 @@ const resolvers = {
             const now = new Date();
             const from = await db.UserModel.findOne({ userName: data.from });
             if(!from.invitations.find(user => user===data.to)) return false;
-            const to = await db.UserModel.findOne({ userName: data.to });
+            const to = await db.UserModel.findOne({ userName: data.to }); 
             if(!to.requests.find(request => request===data.from)) return false;
             from.invitations = from.invitations.filter(user => user!==data.to);
             from.notifications.unshift({ info: `You rejected ${data.to}'s friend request.`, timestamp: now });
@@ -198,6 +198,43 @@ const resolvers = {
                 createTime: new Date(),
             });
             await post.save();
+            switch(data.published) {
+                case 'Public': {
+                    pubSub.publish('Public Post', {
+                        publicPost: {
+                            mutation: 'POST_CREATED',
+                            data: { post },
+                        },
+                    });
+                    break;
+                }
+                case 'Friends': {
+                    const user = await db.UserModel.findOne({ userName: data.author });
+                    user.friends.forEach(friend => {
+                        pubSub.publish(`${friend}'s Post`, {
+                            post: {
+                                mutation: 'POST_CREATED',
+                                data: { post },
+                            },
+                        });
+                    });
+                    pubSub.publish(`${data.author}'s Post`, {
+                        post: {
+                            mutation: 'POST_CREATED',
+                            data: { post },
+                        },
+                    });
+                    break;
+                }
+                default: {
+                    pubSub.publish(`${data.author}'s Post`, {
+                        post: {
+                            mutation: 'POST_CREATED',
+                            data: { post },
+                        },
+                    });
+                }
+            };
             return true;
         },
         async updatePost(parent, { data }, { db, pubSub }, info) {
@@ -248,6 +285,19 @@ const resolvers = {
             });
             return true;
         },
+        // async updateComment(parent, { data }, { db, pubSub }, info) {
+        //     const { postId, commentId, text } = data;
+        //     const post = await db.PostModel.findOne({ postId });
+        //     post.comments.find(comment => comment.commentId===commentId).text = text;
+        //     await post.save();
+        //     pubSub.publish('Public Post', {
+        //         publicPost: {
+        //             mutation: 'COMMENT_UPDATED',
+        //             data: { postId, commentId, text },
+        //         },
+        //     });
+        //     return true;
+        // },
         async deleteComment(parent, { data: { postId, commentId } }, { db, pubSub }, info) {
             const post = await db.PostModel.findOne({ postId });
             if(!post) return false;
@@ -500,12 +550,17 @@ const resolvers = {
         name: 'Date',
         description: 'Date custom scalar type',
         serialize(value) {
+            // value sent to the client
             return value;
         },
         parseValue(value) {
+            // value from the client (variables)
             return value;
         },
         parseLiteral(ast) {
+            // value from the client (inline)
+            // ast value is always in string format
+            // 
             return null;
         },
     }),

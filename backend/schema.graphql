@@ -64,7 +64,7 @@ type ChatRoom {
 
 type Mutation {
     createUser(data: CreateUserInput!): Boolean
-    signIn(data: SignedInUserInput!): Boolean
+    signIn(data: CreateUserInput!): Boolean
     updateHeadShot(data: UpdateHeadShotInput!): Boolean
     updateInfo(data: UpdateInfoInput!): Boolean
     addFriend(data: AddFriendInput!): Boolean
@@ -90,17 +90,10 @@ type Mutation {
 input CreateUserInput {
     userName: ID!
     password: String!
-    email: String!
-    phone: String
-}
-
-input SignedInUserInput {
-    userName: ID!
-    password: String!
 }
 
 input UpdateHeadShotInput {
-    userName: ID!
+    userName: ID!  
     headShotURL: String!
     updateType: String!
 }
@@ -146,7 +139,7 @@ input CreateCommentInput {
 input UpdateCommentInput {
     postId: ID!
     commentId: ID!
-    text: [String!]!
+    text: [String!]!    
 }
 
 input DeleteCommentInput {
@@ -162,7 +155,7 @@ input LikeInput {
 input CreateRoomInput {
     roomName: String!
     roomId: ID!
-    members: [ID!]!
+    members: [ID!]!  
 }
 
 input SendMessageInput {
