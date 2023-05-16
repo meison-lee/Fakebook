@@ -1,5 +1,5 @@
 # Fakebook
-![plot](./demo_image/截圖 2023-05-13 下午4.34.20.png)
+![plot](./demo_image/%E6%88%AA%E5%9C%96%202023-05-13%20%E4%B8%8B%E5%8D%884.34.20.png)
 
 ## Deploy
 [Deploy Link](https://fakebook-likz6q6aoa-uc.a.run.app)
