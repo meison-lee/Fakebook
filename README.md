@@ -67,4 +67,5 @@ A social media application refer to Facebook
 1. yarn install
 2. yarn build
 3. yarn start
-4. open your localhost with port 80, and you will see our website
+4. add .env file to configure your MONGO_URL
+5. open your localhost with port 80, and you will see our website
