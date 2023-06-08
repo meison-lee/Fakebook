@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: final-deployment
+  # namespace: eks-small-server    # don't forget this namespace
+spec:
+  selector:
+    matchLabels:
+      app: final-pod
+
+  template:
+
+    metadata:
+
+      labels:
+        app: final-pod
+
+    spec:
+
+      containers:
+        - name: final
+          image: docker.io/meisonlee/fakebook:eks2
+          ports:
+            - containerPort: 3000
+          resources:
+              requests:
+                cpu: 100m
+                memory: "170Mi"
+              limits:
+                cpu: 150m
+                memory: "350Mi"
+          # volumeMounts:
+          #   - mountPath: /usr/program/docker-volume
+          #     name: small-server-volume
+            
+      # volumes:
+      #   - name: small-server-volume
+      #     hostPath:
+      #       path: /docker-volume
+      #       type: DirectoryOrCreate
+
