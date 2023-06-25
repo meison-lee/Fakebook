@@ -55,7 +55,7 @@ const resolvers = {
                 invitations: [],
                 headShotURL: "",
                 headShotUpdateTime: init,
-                notifications: [{ info: `${userName}, Welcome to Bongo Cha Cha!`, timestamp: now }],
+                notifications: [{ info: `${userName}, Welcome to Fakebook!`, timestamp: now }],
                 notificationsViewTime: init,
                 createTime: now,
             }).save();
@@ -129,7 +129,7 @@ const resolvers = {
             const now = new Date();
             const from = await db.UserModel.findOne({ userName: data.from });
             if(from.friends.some(friend => friend===data.to)) return false;
-            const to = await db.UserModel.findOne({ userName: data.to }); 
+            const to = await db.UserModel.findOne({ userName: data.to });
             if(to.friends.some(friend => friend===data.from)) return false;
             from.invitations = from.invitations.filter(user => user!==data.to);
             from.notifications.unshift({ info: `Congratulations! You and ${data.to} became friend on Bongo.`, timestamp: now });
@@ -157,7 +157,7 @@ const resolvers = {
             const now = new Date();
             const from = await db.UserModel.findOne({ userName: data.from });
             if(!from.invitations.find(user => user===data.to)) return false;
-            const to = await db.UserModel.findOne({ userName: data.to }); 
+            const to = await db.UserModel.findOne({ userName: data.to });
             if(!to.requests.find(request => request===data.from)) return false;
             from.invitations = from.invitations.filter(user => user!==data.to);
             from.notifications.unshift({ info: `You rejected ${data.to}'s friend request.`, timestamp: now });
@@ -560,7 +560,7 @@ const resolvers = {
         parseLiteral(ast) {
             // value from the client (inline)
             // ast value is always in string format
-            // 
+            //
             return null;
         },
     }),
